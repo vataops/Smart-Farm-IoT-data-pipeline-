@@ -1,0 +1,17 @@
+service: validate-lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.8
+  region: ap-northeast-2
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - s3:
+          bucket: mykinesis-bucket-bucket
+          event: s3:ObjectCreated:*
+          existing: true
