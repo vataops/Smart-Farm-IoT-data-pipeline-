@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from datetime import datetime
 from random import randint
 
-my_stream_name = 'test-final'
+my_stream_name = 'test-stream'
 load_dotenv()
 client = boto3.client('kinesis', region_name='ap-northeast-2', aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'), aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'))
 

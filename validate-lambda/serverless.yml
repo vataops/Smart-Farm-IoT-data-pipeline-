@@ -12,6 +12,6 @@ functions:
     handler: handler.hello
     events:
       - s3:
-          bucket: mykinesis-bucket-bucket
+          bucket: coz-farm-sensor-data-bucket
           event: s3:ObjectCreated:*
           existing: true
