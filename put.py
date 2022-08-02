@@ -37,7 +37,7 @@ def put_to_stream(temp, humi, co2, pres ,timestamp ,devi):
 i = 0
 
 while i < 12:
-    err_randint = randint(0,4)
+    err_randint = randint(0,9)
     if err_randint == 0:
         err = 1
     else:
