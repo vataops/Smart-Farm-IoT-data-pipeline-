@@ -15,7 +15,7 @@ client = boto3.client('kinesis', region_name=os.getenv('AWS_DEFAULT_REGION'), aw
 def put_to_stream(temp, humi, co2, pres ,timestamp ,devi):
     payload = {
         "result": "success",
-        "error_code": "0",
+        "error_code": err,
         "device_id": devi,
            "coord": {
                 "lon": "-8.61",
@@ -37,11 +37,16 @@ def put_to_stream(temp, humi, co2, pres ,timestamp ,devi):
 i = 0
 
 while i < 12:
+    err_randint = randint(0,4)
+    if err_randint == 0:
+        err = 1
+    else:
+        err = 0
     devi = '39278391'
-    temp = randint(0, 40)
-    humi = randint(0, 40)
-    pres = randint(0, 40)
-    co2  = randint(0, 40)
+    temp = randint(13, 35)
+    humi = randint(50, 90)
+    pres = randint(750, 1500)
+    co2  = randint(675, 825)
     timestamp = time.time()
 
     result = put_to_stream(temp, humi, co2, pres ,timestamp ,devi)
