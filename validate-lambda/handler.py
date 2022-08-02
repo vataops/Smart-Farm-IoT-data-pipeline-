@@ -19,20 +19,16 @@ def hello(event, context):
         # 비정상적인 데이터 검출 시, 다른 파일로 이어지게..?
         s3_object = s3.Object(bucket, key)
         s3_object.download_fileobj(buffer) # s3에서 받아온 데이터를 buffer에 파일 형태로 저장
-        err = pq.read_table(buffer, filters = [('error_code', '==', 1)]) # 조건에 맞는 buffer 데이터를 테이블 형식으로 불러오기
-        temp = pq.read_table(buffer, filters = [('temperature', '<', 28, 'or', 'temperature', '>', 18)])
-        hum = pq.read_table(buffer, filters = [('humidity', '<', 81, 'or', 'humidity', '>', 59)])
-        co2 = pq.read_table(buffer, filters = [('co2', '<', 750, 'or', 'co2', '>', 650)])
-
-        err_table = err.to_pandas() # pandas dateframe 형식으로 buffer 데이터 테이블 저장
-        temp_table = temp.to_pandas()
-        hum_table = hum.to_pandas()
-        co2_table = co2.to_pandas()
-
-        print(err_table)
-        print(temp_table)
-        print(hum_table)
-        print(co2_table)
+        table = pq.read_table(buffer) # buffer 데이터를 테이블 형식으로 불러오기
+        df = table.to_pandas() # pandas dateframe 형식으로 buffer 데이터 테이블 저장
+        err = df[(df.error_code == 1)]
+        temp = df[(df.temperature > 28) | (df.temperature < 17)]
+        hum = df[(df.humidity > 59) | (df.humidity < 81)]
+        co2 = df[(df.co2 > 650) | (df.co2 < 750)]
+        print(err)
+        print(temp)
+        print(hum)
+        print(co2)
         return "Hello"
     except Exception as e:
         print(e)
