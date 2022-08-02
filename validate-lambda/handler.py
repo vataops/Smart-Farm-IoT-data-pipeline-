@@ -15,8 +15,6 @@ def hello(event, context):
     # print('bucketbucket: ' + bucket)
     # print('keykey: ' + key)
     try:
-        # if문 추가 : 비정상적인 데이터 정제
-        # 비정상적인 데이터 검출 시, 다른 파일로 이어지게..?
         s3_object = s3.Object(bucket, key)
         s3_object.download_fileobj(buffer) # s3에서 받아온 데이터를 buffer에 파일 형태로 저장
         table = pq.read_table(buffer) # buffer 데이터를 테이블 형식으로 불러오기
@@ -30,7 +28,7 @@ def hello(event, context):
 
         filtered_df = pd.concat([err, temp, hum, co2], ignore_index = True)
         result = filtered_df.to_parquet()
-        return filtered_df
+        return print('결과: ' + filtered_df)
     except Exception as e:
         print(e)
         print('Error getting object {} from bucket {}. Make sure they exist and your bucket is in the same region as this function.'.format(key, bucket))
