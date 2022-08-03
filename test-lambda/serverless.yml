@@ -9,6 +9,7 @@ provider:
 functions:
   hello:
     handler: handler.hello
+    timeout: 60
     events:
       - httpApi:
           path: /
