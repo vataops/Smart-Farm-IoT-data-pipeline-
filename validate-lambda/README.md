@@ -31,3 +31,18 @@
         - `pandas.concat` 함수를 사용하여 데이터 모으기
     - 데이터 모음을 `parquet` 파일로 변환
         - `pandas.DataFrame.to_parquet` 함수 사용
+---
+### **2022.08.03 커밋**
+- **1차 커밋**
+    - Target S3로 비정상적 데이터 Upload
+        - Upload 할 file 이름을 time 모듈을 사용하여 고유한 이름으로 지정
+        - parquet 파일을 S3로 저장
+    - 비정상적 데이터를 한 파일로 모을 때의 중복 데이터 제거 
+- **2차 커밋**
+    - time.localtime() 함수를 사용하여 지정했더니 Lambda로 넘어가면서 시간대가 바뀌는 문제
+        - -> datatime 모듈로 시간대 지정
+    - Lambda 내에 환경변수 설정
+    - parquet 파일이 Lambda 내에 저장될 경로 설정
+        - os 모듈 사용
+    - boto3의 upload_fileobj() 함수를 사용하니, obj를 불러오는 과정에서 문제 발생
+        - -> upload_file() 함수로 변경, 파일의 경로와 S3로 저장할 이름 설정
