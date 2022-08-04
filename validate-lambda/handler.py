@@ -49,8 +49,7 @@ def hello(event, context):
         if len(filtered_df) != 0 :
             unique_dev_ids = filtered_df.device_id.unique()
 
-            filtered_err = filtered_df[(filtered_df.error_code == 1)]
-            
+            err_arr = filtered_df.error_code.to_numpy()
             time_arr = filtered_df.server_time.to_numpy()
             device_id_arr = filtered_df.device_id.to_numpy()
             temp_arr = filtered_df.temperature.to_numpy()
@@ -59,28 +58,25 @@ def hello(event, context):
             co2_arr = filtered_df.co2.to_numpy()
 
             message_arr = []
-            if len(filtered_err) != 0:
-                for dev_id in unique_dev_ids:
-                    dev_id_df = filtered_df[filtered_df.device_id == dev_id]
-                    for i in range(len(dev_id_df)) :
-                        message = 'device id : {}번 센서가 아파요'.format(device_id_arr[i])
+            for dev_id in unique_dev_ids:
+                dev_id_df = filtered_df[filtered_df.device_id == dev_id]
+                for i in range(len(dev_id_df)) :
+                    if err_arr[i] == "1":
+                        message = '{} \n device id : {}번 센서가 아파요 \n --- \n'.format(time_arr[i], device_id_arr[i])
                         message_arr.append(message)
-                    result = " ".join(message_arr)
-                    discord_message = {
-                        'username': 'test',
-                        'content': result
-                    }
-            else: 
-                for dev_id in unique_dev_ids:
-                    dev_id_df = filtered_df[filtered_df.device_id == dev_id]
-                    for i in  range(len(dev_id_df)):
+                        result = " ".join(message_arr)
+                        discord_message = {
+                            'username': 'test',
+                            'content': result
+                        }
+                    else:
                         message = '{} \n device {} 에서 이상 데이터가 감지됨 \n temperature : {}\u00B0 \n pressure : {}hPa \n humidity : {}% \n co2 : {}ppm \n --- \n'.format(time_arr[i], device_id_arr[i], temp_arr[i],pres_arr[i], hum_arr[i], co2_arr[i])
                         message_arr.append(message)
-                    result = " ".join(message_arr)
-                    discord_message = {
-                        'username': 'test',
-                        'content': result
-                    }
+                        result = " ".join(message_arr)
+                        discord_message = {
+                            'username': 'test',
+                            'content': result
+                        }
 
             payload = json.dumps(discord_message).encode('utf-8')
             headers = {
