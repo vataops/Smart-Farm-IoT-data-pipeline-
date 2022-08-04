@@ -1,5 +1,5 @@
 ## test-lambda
----
+--
 test 하는 방법
 
 test-lambda_API(count, interval 입력) → test-lambda(입력 데이터 결정 및 전달) → Kinesis_API(데이터 받아서 Kinesis로 전달)
