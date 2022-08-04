@@ -25,14 +25,8 @@ def hello(event, context):
     file_name = korea_time.strftime('%Y-%m-%d-%I:%M:%S%p.parquet')
     HOOK_URL = os.environ.get('HOOK_URL')
 
-    discord_message = {
-        'username': 'test',
-        'content': 'Test'
-    }
-    err_discord_message = {
-        'username': 'test',
-        'content': 'Test'
-    }
+    discord_message = []
+    err_discord_message = []
     dev_id_df = []
     message_arr = []
     err_message_arr= []
