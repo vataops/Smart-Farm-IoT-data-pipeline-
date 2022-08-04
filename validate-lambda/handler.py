@@ -66,7 +66,7 @@ def hello(event, context):
                 err_message_arr.append(message)
                 result_arr = "\n --- \n".join(err_message_arr)
                 err_discord_message = {
-                    'username': 'test',
+                    'username': 'Sensor_Manager',
                     'content': result_arr
                 }
         for i in range(len(dev_id_df)) :
@@ -75,7 +75,7 @@ def hello(event, context):
                 message_arr.append(message)
                 result = "\n --- \n".join(message_arr)
                 discord_message = {
-                    'username': 'test',
+                    'username': 'Sensor_Manager',
                     'content': result
                 }
 
