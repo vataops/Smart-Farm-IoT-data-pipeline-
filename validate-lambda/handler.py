@@ -29,6 +29,7 @@ def hello(event, context):
         'username': 'test',
         'content': 'Test'
     }
+    dev_id_df = []
     
     try:
         s3_object = s3.Object(bucket, key)
@@ -60,23 +61,24 @@ def hello(event, context):
             message_arr = []
             for dev_id in unique_dev_ids:
                 dev_id_df = filtered_df[filtered_df.device_id == dev_id]
-                for i in range(len(dev_id_df)) :
-                    if err_arr[i] == "1":
-                        message = '{} \n device id : {}번 센서가 아파요 \n --- \n'.format(time_arr[i], device_id_arr[i])
-                        message_arr.append(message)
-                        result = " ".join(message_arr)
-                        discord_message = {
-                            'username': 'test',
-                            'content': result
-                        }
-                    else:
-                        message = '{} \n device {} 에서 이상 데이터가 감지됨 \n temperature : {}\u00B0 \n pressure : {}hPa \n humidity : {}% \n co2 : {}ppm \n --- \n'.format(time_arr[i], device_id_arr[i], temp_arr[i],pres_arr[i], hum_arr[i], co2_arr[i])
-                        message_arr.append(message)
-                        result = " ".join(message_arr)
-                        discord_message = {
-                            'username': 'test',
-                            'content': result
-                        }
+            for i in range(len(dev_id_df)) :
+                if err_arr[i] == "1":
+                    message = '{} \n device {}번 센서가 아파요'.format(time_arr[i], device_id_arr[i])
+                    message_arr.append(message)
+                    result = "\n --- \n".join(message_arr)
+                    discord_message = {
+                        'username': 'test',
+                        'content': result
+                    }
+            for i in range(len(dev_id_df)) :
+                if err_arr[i] == "0":
+                    message = '{} \n device {}에서 이상 데이터가 감지됨 \n temperature : {}\u00B0 \n pressure : {}hPa \n humidity : {}% \n co2 : {}ppm'.format(time_arr[i], device_id_arr[i], temp_arr[i],pres_arr[i], hum_arr[i], co2_arr[i])
+                    message_arr.append(message)
+                    result = "\n --- \n".join(message_arr)
+                    discord_message = {
+                        'username': 'test',
+                        'content': result
+                    }
 
             payload = json.dumps(discord_message).encode('utf-8')
             headers = {
