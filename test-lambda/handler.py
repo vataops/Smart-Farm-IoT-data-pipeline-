@@ -8,14 +8,14 @@ import os
 my_stream_name = 'tf-test-stream'
 api_address = os.getenv('API_ENDPOINT')
 
-def put_to_api(temp, humi, co2, pres, timestamp, devi, err):
+def put_to_api(temp, humi, co2, pres, timestamp, devi, err, lon, lat):
     payload = {
             "result": "success",
             "error_code": err,
             "device_id": devi,
             "coord": {
-                "lon": "-8.61",
-                "lat": "41.15"
+                "lon": lon,
+                "lat": lat
             },
             "server_time": timestamp,
             "temperature": temp,
@@ -68,8 +68,9 @@ def hello(event, context):
         else:
             err_2 = 0
         
-        devi_1 = '39278391'
-        devi_2 = '51539982'
+        #device_id, lon, lat
+        devi_1 = ['39278391', '34', '-118.24']
+        devi_2 = ['51539982', '37.3', '-122']
 
         temp = randint(13, 35)
         humi = randint(50, 90)
@@ -77,10 +78,10 @@ def hello(event, context):
         co2 = randint(675, 825)
         timestamp = time.time()
 
-        result_1 = put_to_api(temp, humi, co2, pres, timestamp , devi_1, err_1)
+        result_1 = put_to_api(temp, humi, co2, pres, timestamp, devi_1[0], err_1, devi_1[2], devi_1[1])
         print('response: {}'.format(result_1))
 
-        result_2 = put_to_api(temp, humi, co2, pres, timestamp, devi_2, err_2)
+        result_2 = put_to_api(temp, humi, co2, pres, timestamp, devi_2[0], err_2, devi_2[2], devi_2[1])
         print('response: {}'.format(result_2))
         time.sleep(inter)
 
