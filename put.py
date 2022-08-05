@@ -10,8 +10,7 @@ load_dotenv()
 
 my_stream_name = 'test-stream'
 
-client = boto3.client('kinesis', region_name=os.getenv('AWS_DEFAULT_REGION'), aws_access_key_id=os.getenv(
-    'AWS_ACCESS_KEY_ID'), aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY_ID'))
+client = boto3.client('kinesis', region_name=os.getenv('AWS_DEFAULT_REGION'), aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'), aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY_ID'))
 
 
 def put_to_stream(temp, humi, co2, pres, timestamp, devi):
@@ -35,7 +34,6 @@ def put_to_stream(temp, humi, co2, pres, timestamp, devi):
         Data=json.dumps(payload),
         PartitionKey=devi)
     return put_response
-
 
 i = 0
 
