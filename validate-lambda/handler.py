@@ -48,8 +48,9 @@ def hello(event, context):
 
     # 하나라도 있으면 discord webhook 전송
     if len(filtered_df) != 0 :
-        unique_dev_ids = filtered_df.device_id.unique()
+        unique_dev_ids = filtered_df.device_id.unique() # 고유한 device_id 추출
 
+        # 각 데이터마다 추출해서 배열화
         err_arr = filtered_df.error_code.to_numpy()
         time_arr = filtered_df.server_time.to_numpy()
         device_id_arr = filtered_df.device_id.to_numpy()
@@ -58,17 +59,23 @@ def hello(event, context):
         hum_arr = filtered_df.humidity.to_numpy()
         co2_arr = filtered_df.co2.to_numpy()
 
+        # device_id로 이상 데이터 나누기
         for dev_id in unique_dev_ids:
             dev_id_df = filtered_df[filtered_df.device_id == dev_id]
+
+        # 두가지 데이터를 따로 전송
+        # error_code == "1"인 데이터 Webhook 전송 (행별로 찾아서 전송)
         for i in range(len(dev_id_df)) :
             if err_arr[i] == "1":
                 message = '{} \n device {}번 센서가 아파요'.format(time_arr[i], device_id_arr[i])
-                err_message_arr.append(message)
-                result_arr = "\n --- \n".join(err_message_arr)
+                err_message_arr.append(message) # message format을 반복적으로 arr 형식에 추가
+                err_result = "\n --- \n".join(err_message_arr) # err_message_arr를 기준에 따라 나눠, String 형식으로 묶음
                 err_discord_message = {
                     'username': 'Sensor_Manager',
-                    'content': result_arr
+                    'content': err_result
                 }
+        
+        # error_code != "1"인 데이터 Webhook 전송
         for i in range(len(dev_id_df)) :
             if err_arr[i] == "0":
                 message = '{} \n device {}에서 이상 데이터가 감지됨 \n temperature : {}\u00B0 \n pressure : {}hPa \n humidity : {}% \n co2 : {}ppm'.format(time_arr[i], device_id_arr[i], temp_arr[i],pres_arr[i], hum_arr[i], co2_arr[i])
@@ -79,6 +86,7 @@ def hello(event, context):
                     'content': result
                 }
 
+        # HTTP 요청 format (두가지 데이터 구별)
         payload = json.dumps(discord_message).encode('utf-8')
         err_payload = json.dumps(err_discord_message).encode('utf-8')
         headers = {
@@ -99,7 +107,9 @@ def hello(event, context):
         os.makedirs('dest_s3', exist_ok= True)
         os.chdir('dest_s3')
         result = filtered_df.to_parquet(file_name)
+
     try:
+        # 이상 데이터가 있다면 Webhook 전송 (두가지 데이터 구별)
         if len(filtered_df) != 0:
             err_req = Request(HOOK_URL, err_payload, err_headers)
             err_response = urlopen(err_req)
