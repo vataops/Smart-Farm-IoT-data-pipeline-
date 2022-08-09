@@ -131,4 +131,4 @@ def hello(event, context):
     except Exception as e:
         print(e)
         print('이상 데이터 없음')
-        raise e    
+        raise e   
