@@ -135,7 +135,7 @@ resource "aws_glue_crawler" "example" {
   database_name = aws_glue_catalog_database.tf-sensor-database.name
   name          = "parquet-sensor-data-crawler"
   role          = aws_iam_role.AWSGlueRole-parquet-data-crawler.arn
-  schedule      = "cron(0/15 * * * ? *)"
+  # schedule      = "cron(0/15 * * * ? *)"
   s3_target {
     path = "s3://${aws_s3_bucket.tf-dummy.bucket}"
   }
