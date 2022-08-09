@@ -17,12 +17,13 @@ resource "aws_athena_data_catalog" "tf-sensor-data-catalog" {
   type        = "GLUE"
 
   parameters = {
-    "catalog-id" = "917517450640"
+    "catalog-id" = var.account_id
   }
 }
 
 resource "aws_athena_workgroup" "test" {
   name = "test-workgroup"
+  force_destroy = true
 }
 
 # resource "aws_athena_database" "tf-sensor-database" {
