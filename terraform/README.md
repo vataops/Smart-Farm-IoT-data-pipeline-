@@ -1,6 +1,6 @@
 # Terraform을 활용한 아키텍쳐 IaC화
 
-<a href="https://www.terraform.io/"><img src="../assets/Terraform.png" alt="isolated" width="200"/></a>
+<a href="https://www.terraform.io/"><img src="../assets/Terraform.png" alt="isolated" width="500"/></a>
 
 ## 주요 목표
 - Terraform를 사용해서 스마트팜 IoT 센서 데이터 서비스 구축
@@ -11,7 +11,6 @@
 ## Terraform 파일 명세
 
 #### `main.tf`
-
 - AWS 리소스를 사용하기 위한 provider에 관한 정보를 담고 있는 .tf 파일입니다.
 
 ```terraform
@@ -25,7 +24,20 @@ terraform {
   required_version = ">= 1.1.0"
 }
 ```
+#### `pseudo-api-service.tf`
 
+<img src="../assets/final-architecture-part-1.png" alt="isolated" width="350"/>
+
+### `kinesis-service.tf`
+
+<img src="../assets/final-architecture-part-2.png" alt="isolated" width="600"/>
+
+### `validate-log-service.tf`
+<img src="../assets/final-architecture-part-3.png" alt="isolated" width="280"/>
+
+### `monitoring-service.tf`
+
+<img src="../assets/final-architecture-part-4.png" alt="isolated"/>
 #### `ec2.tf`
 - 모니터링 서비스인 Grafana를 구동하기 위한 EC2 서버 생성을 위한 .tf 파일입니다. 
 - 해당 .tf 파일은 인스턴스가 위치하는 VPC, Subnet, Security Group 등과 같은 리소스들에 대한 정의 또한 포함하고 있습니다.
