@@ -1,4 +1,4 @@
-# Terraform을 활용한 아키텍쳐 IaC화
+# Terraform을 활용한 아키텍쳐 IaC화 (수정 중)
 
 <a href="https://www.terraform.io/"><img src="../assets/Terraform.png" alt="isolated" width="500"/></a>
 
