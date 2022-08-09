@@ -18,4 +18,3 @@ var/
 
 # Serverless directories
 .serverless
-.env
