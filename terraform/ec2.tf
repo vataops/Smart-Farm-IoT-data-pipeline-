@@ -86,7 +86,7 @@ resource "aws_security_group" "allow_grafana" {
   }
 }
 
-resource "aws_instance" "grafana-ec2-dwh" {
+resource "aws_instance" "grafana-ec2-final" {
   ami           = "ami-058165de3b7202099" # ap-northeast-2 Ubuntu 22.04 (LTS)
   instance_type = "t2.nano"
   subnet_id = aws_subnet.my_subnet.id
@@ -110,6 +110,6 @@ sudo systemctl enable grafana-server.service
 EOF
 
   tags = {
-    Name = "grafana-ec2-dwh"
+    Name = "grafana-ec2-final"
   }
 }
