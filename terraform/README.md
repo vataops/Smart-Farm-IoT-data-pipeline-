@@ -37,7 +37,7 @@ terraform {
 
 ### `monitoring-service.tf`
 
-<img src="../assets/final-architecture-part-4.png" alt="isolated"/>
+<img src="../assets/final-architecture-part-4.png" alt="isolated" width="600"/>
 #### `ec2.tf`
 - 모니터링 서비스인 Grafana를 구동하기 위한 EC2 서버 생성을 위한 .tf 파일입니다. 
 - 해당 .tf 파일은 인스턴스가 위치하는 VPC, Subnet, Security Group 등과 같은 리소스들에 대한 정의 또한 포함하고 있습니다.
