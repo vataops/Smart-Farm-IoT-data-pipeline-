@@ -1,20 +1,4 @@
 # 아키텍쳐에서 Kinesis 포션을 생성하기 위한 .tf 스크립트입니다.
-terraform {
-
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 4.16"
-    }
-    archive = {
-      source  = "hashicorp/archive"
-      version = "~> 2.2.0"
-    }
-  }
-
-  required_version = ">= 1.2.0"
-}
-
 // 센서 데이터 수집을 위한 Kinesis Data Stream
 resource "aws_kinesis_stream" "test_stream" {
   name             = "tf-test-stream"
@@ -71,8 +55,8 @@ resource "aws_iam_role_policy" "inline-policy" {
         "s3:PutObject"
       ],
       "Resource": [
-        "arn:aws:s3:::coz-farm-sensor-data-bucket",
-        "arn:aws:s3:::coz-farm-sensor-data-bucket/*"
+        "${aws_s3_bucket.tf-dummy.arn}",
+        "${aws_s3_bucket.tf-dummy.arn}/*"
       ]
     },
     {
@@ -92,9 +76,9 @@ resource "aws_iam_role_policy" "inline-policy" {
         "glue:GetTableVersions"
       ],
       "Resource": [
-        "arn:aws:glue:ap-northeast-2:917517450640:catalog",
-        "arn:aws:glue:ap-northeast-2:917517450640:database/farm_sensor_database",
-        "arn:aws:glue:ap-northeast-2:917517450640:table/farm_sensor_database/test_bucket_crawler_1324"
+        "arn:aws:glue:ap-northeast-2:${var.account_id}:catalog",
+        "${aws_glue_catalog_database.tf-sensor-database.arn}",
+        "${aws_glue_catalog_table.tf-sensor-primer-table.arn}"
       ]
     }
   ]
@@ -110,11 +94,11 @@ resource "aws_kinesis_firehose_delivery_stream" "test_delivery_stream" {
 
   kinesis_source_configuration {
     kinesis_stream_arn = aws_kinesis_stream.test_stream.arn
-    role_arn = "arn:aws:iam::917517450640:role/firehose_test_role"
+    role_arn = aws_iam_role.firehose_role.arn
   }
   extended_s3_configuration {
-    role_arn   = "arn:aws:iam::917517450640:role/firehose_test_role"
-    bucket_arn = "arn:aws:s3:::coz-farm-sensor-data-bucket"
+    role_arn   = aws_iam_role.firehose_role.arn
+    bucket_arn = aws_s3_bucket.tf-dummy.arn
     # Must be at least 64
     buffer_size = 128
     buffer_interval = 60
@@ -133,9 +117,9 @@ resource "aws_kinesis_firehose_delivery_stream" "test_delivery_stream" {
       }
 
       schema_configuration {
-        database_name = "farm_sensor_database"
-        role_arn      = "arn:aws:iam::917517450640:role/firehose_test_role"
-        table_name    = "test_bucket_crawler_1324"
+        database_name = aws_glue_catalog_database.tf-sensor-database.name
+        role_arn      = aws_iam_role.firehose_role.arn
+        table_name    = aws_glue_catalog_table.tf-sensor-primer-table.name
       }
     }
   }
