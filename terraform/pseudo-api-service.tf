@@ -1,7 +1,7 @@
 data "archive_file" "pseudo_sensor_log_lambda_function" {
   type = "zip"
 
-  source_dir  = "${path.module}/../pseudo_sensor_log_lambda"
+  source_dir  = "${path.module}/../pseudo-sensor-log-lambda"
   output_path = "${path.module}/pseudo_sensor_log_lambda.zip"
 }
 
