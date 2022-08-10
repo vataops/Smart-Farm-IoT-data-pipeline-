@@ -53,7 +53,7 @@ resource "aws_lambda_function" "lambda_function" {
 
   s3_bucket = aws_s3_bucket.validate-lambda-bucket.id
   s3_key = aws_s3_object.validate-lambda.key
-  function_name = "validate-lambda"
+  function_name = "validate_log_lambda"
   role          = aws_iam_role.lambda_role.arn
   handler       = "handler.hello"
 
@@ -77,7 +77,7 @@ resource "aws_lambda_function" "lambda_function" {
 }
 
 resource "aws_cloudwatch_log_group" "lambda_log" {
-  name              = "/aws/lambda/validate-lambda"
+  name              = "/aws/lambda/validate_log_lambda"
   retention_in_days = 14
 }
 
