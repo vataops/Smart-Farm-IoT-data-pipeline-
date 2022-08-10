@@ -71,3 +71,57 @@ AWS에서 제공하는 매니지드 데이터 스트리밍 서비스인 Amazon K
 
 ---
 ## Terraform 스크립트 실행 및 테스트 순서
+
+- [AWS CLI](https://aws.amazon.com/ko/cli/)를 로컬 환경에 설치합니다. 설치 방법은 해당 링크에 제공되어 있습니다.
+- 현재 리포지토리를 fork한 후 로컬 환경에서 `git clone`을 진행합니다.
+- 기존에 소유하고 있는 AWS 계정에서 Access Key/Secret Key 를 발급받은 후, [AWS CLI](https://aws.amazon.com/ko/cli/)에 다음과 같은 명령어를 입력한 후 크레덴셜을 기입합니다.
+  > `aws configure`
+- Terraform 리소스를 사용해야 함으로 [Terraform CLI](https://learn.hashicorp.com/tutorials/terraform/install-cli)를 설치합니다.
+- 터미널에서 클론해 놓은 디렉터리로 이동하여 `cd terraform`으로 디렉터리를 이동합니다.
+- 먼저 `terraform` 디렉터리를 `terraform init`을 통해 초기화합니다.
+- `main.tf` 기본 설정 상으로는 리소스들이 서울 리전(ap-northeast-2)에 생성됩니다. 이를 수정하고 싶다면 다음과 같은 형식으로 변경사항을 저장합니다.
+
+  ```ruby
+  # main.tf
+  provider "aws" {
+    region  = "YOUR_PREFERRED_REGION"
+  }
+  ```
+- 이 프로젝트는 사용자가 AWS Route53에 등록되어 있는 도메인이 있다고 가정하고 만들어졌습니다. 만약 그렇지 않은 경우에는 `monitoring-service.tf` 파일의
+  ```ruby
+  # monitoring-service.tf
+  data "aws_route53_zone" "hosted-zone" {
+  name         = "${var.domain_name}"
+  }
+
+  resource "aws_route53_record" "www" {
+    zone_id = data.aws_route53_zone.hosted-zone.zone_id
+    name    = "www.${var.domain_name}"
+    type    = "A"
+    ttl     = 300
+    records = ["${aws_instance.grafana-ec2-final.public_ip}"]
+  }
+  ```
+  와 `variables.tf`의 다음 부분을 주석처리합니다.
+  ```ruby
+  # variables.tf
+  variable "domain_name" {
+    type = string
+  }
+  ```
+- `terraform plan`을 통한 리소스 플래닝을 진행합니다. 이때 콘솔에 사용자의 AWS Account ID (12자리)를 입력해야 합니다.
+  - Route53 상의 도메인을 소유한 경우에는 이 또한 입력해야 합니다.
+- `terraform plan`이 정상적으로 실행되었다면 `terraform apply`를 통해 리소스를 실제로 생성합니다. `plan`과 마찬가지로 Account ID를 입력해야 합니다.
+- 리소스들이 정상적으로 생성되었다면 다음과 같이 `pseudo-api-gw-endpoint`가 output으로 콘솔상에 나타나게 됩니다.
+<img src="../assets/outputs.png" alt="centered image" width="800"/>
+
+- 생성된 엔드포인트에 [Postman](https://www.postman.com/)과 같은 API 플랫폼을 활용하여 POST 요청을 진행합니다. 이때 요청 페이로드는 다음과 같은 json 형태로 작성합니다.
+    ```json
+    {
+      "count": 12,
+      "interval": 10
+    }
+    ```
+<div style="text-align: center;"><img src="../assets/postman-sample-request.png" alt="centered image" width="800"/></div>
+
+- 약 1분 마다 이상 데이터가 지정된 Discord Webhook URL을 통하여 전송됩니다.
