@@ -1,11 +1,3 @@
-variable "HOOK_URL" {
-  type = string
-  default = "https://discord.com/api/webhooks/1004623011401449472/uN08DBEV4it5J75AVqiloev0T6GLtJw6DoDn2OF_w03lMOobtDo5A6fFQFImV65D_aZz"
-}
-variable "lambda_function_name" {
-  default = "validate-lambda"
-}
-
 resource "aws_iam_role" "lambda_role" {
   name = "validate-lambda-policy"
 
@@ -61,7 +53,7 @@ resource "aws_lambda_function" "lambda_function" {
 
   s3_bucket = aws_s3_bucket.validate-lambda-bucket.id
   s3_key = aws_s3_object.validate-lambda.key
-  function_name = var.lambda_function_name
+  function_name = "validate-lambda"
   role          = aws_iam_role.lambda_role.arn
   handler       = "handler.hello"
 
@@ -85,7 +77,7 @@ resource "aws_lambda_function" "lambda_function" {
 }
 
 resource "aws_cloudwatch_log_group" "lambda_log" {
-  name              = "/aws/lambda/${var.lambda_function_name}"
+  name              = "/aws/lambda/validate-lambda"
   retention_in_days = 14
 }
 
