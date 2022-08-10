@@ -24,7 +24,8 @@
 - Discord 알림 전송
 ### [5. Architecture 테스트](#architecture-test)
 - 가상의 로그 데이터 전송
-### [6. Resource](#resource)
+### [6. 아키텍처 실행 가이드](#)
+### [7. Resource](#resource)
 - Resource 설명
 
 ## **Architecture Image**
@@ -80,6 +81,9 @@ Content-Type : application/json
 > |----------|:----:|---------------|
 > | count    | int  | 전송할 데이터의 갯수 | 
 > | interval | int  | 전송할 데이터의 간격 (초 단위)| 
+
+### **아키텍처를 어떻게 실행하나요?**
+<a href="https://github.com/cs-devops-bootcamp/devops-02-Final-TeamA-scenario1/blob/main/terraform/README.md"><img src="../assets/Terraform.png" width="500"/></a>
 
 ### **Resource**
 - AWS API Gateway
