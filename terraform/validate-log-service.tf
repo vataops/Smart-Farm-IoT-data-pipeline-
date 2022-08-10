@@ -30,12 +30,12 @@ resource "aws_iam_role_policy_attachment" "lambda_role_policy" {
 data "archive_file" "lambda_function" {
   type = "zip"
 
-  source_dir  = "${path.module}/../validate-lambda"
-  output_path = "${path.module}/validate-lambda.zip"
+  source_dir  = "${path.module}/../validate-log-lambda"
+  output_path = "${path.module}/validate_log_lambda.zip"
 }
 
 resource "aws_s3_bucket" "validate-lambda-bucket" {
-  bucket = "validate-lambda-bucket"
+  bucket = "validate-log-lambda-bucket"
   acl = "private"
   force_destroy = true
 }
@@ -43,7 +43,7 @@ resource "aws_s3_bucket" "validate-lambda-bucket" {
 resource "aws_s3_object" "validate-lambda" {
   bucket = aws_s3_bucket.validate-lambda-bucket.id
 
-  key    = "validate-lambda.zip"
+  key    = "validate_log_lambda.zip"
   source = data.archive_file.lambda_function.output_path
 
   etag = filemd5(data.archive_file.lambda_function.output_path)
@@ -82,7 +82,7 @@ resource "aws_cloudwatch_log_group" "lambda_log" {
 }
 
 resource "aws_iam_policy" "lambda_logging" {
-  name        = "validate-lambda-log-policy"
+  name        = "validate-log-lambda-log-policy"
   path        = "/"
 
   policy = <<EOF
