@@ -1,5 +1,3 @@
 terraform.*
 .terraform/*
-pseudo_sensor_log_lambda.zip
-validate-lambda.zip
-validate_log_lambda.zip
+*.zip
