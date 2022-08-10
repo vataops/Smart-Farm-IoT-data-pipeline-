@@ -12,7 +12,7 @@
 
 ## Terraform 파일 명세
 
-#### `main.tf`
+### `main.tf`
 - AWS 리소스를 사용하기 위한 provider에 관한 정보를 담고 있는 .tf 파일입니다.
 
 ```terraform
@@ -27,7 +27,8 @@ terraform {
 }
 
 ```
-#### `pseudo-api-service.tf`
+
+### `pseudo-api-service.tf`
 
 <div style="text-align: center;"><img src="../assets/final-architecture-part-1.png" alt="isolated" width="350"/></div>
 
@@ -35,7 +36,8 @@ terraform {
 - 실시간 센서 데이터를 모방하는 `pseudo-sensor-log-lambda` 함수
 - `pseudo-sensor-log-lamdba` 함수를 트리거 하기 위한 API Gateway
 
-#### `kinesis-service.tf`
+
+### `kinesis-service.tf`
 
 <div style="text-align: center;"><img src="../assets/final-architecture-part-2.png" alt="isolated" width="600"/></div>
 
@@ -45,7 +47,7 @@ AWS에서 제공하는 매니지드 데이터 스트리밍 서비스인 Amazon K
 - ETL 작업이 완료된 데이터를 보관하는 S3 버킷
 
 
-#### `validate-log-service.tf`
+### `validate-log-service.tf`
 <div style="text-align: center;"><img src="../assets/final-architecture-part-3.png" alt="isolated" width="280"/></div>
 
 정제되어 S3 버킷에 저장된 센서로그에 대한 무결성 검증을 진행하는 서비스를 구축하는 .tf 파일입니다.
@@ -53,7 +55,8 @@ AWS에서 제공하는 매니지드 데이터 스트리밍 서비스인 Amazon K
   - `spike-log-bucket`에 이상데이터를 저장합니다.
   - 지정된 Discord Webhook 채널에 해당 사항을 공지합니다.
 
-#### `monitoring-service.tf`
+
+### `monitoring-service.tf`
 
 <div style="text-align: center;"><img src="../assets/final-architecture-part-4.png" alt="isolated" width="600"/></div>
 
@@ -62,7 +65,8 @@ AWS에서 제공하는 매니지드 데이터 스트리밍 서비스인 Amazon K
 - Athena에서 쿼리할 데이터를 미리 준비해주는 Crawler에 대한 정의 또한 포함합니다.
 - Route53에서 EC2 인스턴스의 IP 및 DNS 주소를 사용자 도메인의 A-Record로 생성합니다.
 
-#### `variables.tf`
+
+### `variables.tf`
 - 리소스들이 활용할 수 있는 변수들에 대한 선언을 담고 있는 .tf 파일입니다.
 
 ---
