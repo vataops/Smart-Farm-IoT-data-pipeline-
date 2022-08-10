@@ -141,7 +141,7 @@ resource "aws_lambda_permission" "apigw_lambda" {
 
 resource "aws_api_gateway_deployment" "pseudo_api_gw-deployment" {
   rest_api_id = aws_api_gateway_rest_api.pseudo_api_gw.id
-
+  # Deployment 트리거를 수정함으로써 terraform apply를 두번 실행해야되는 문제 해결
   triggers = {
     redeployment = sha1(jsonencode([
       aws_api_gateway_resource.resource.id,
