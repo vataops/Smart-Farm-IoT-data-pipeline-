@@ -75,7 +75,10 @@ def hello(event, context):
 ### 테스트 방법
 - API_ENDPOINT : Kinesis Data Stream의 API Endpoint
 ```
+...
+// handler.py
 api_address = os.getenv('API_ENDPOINT')
+...
 ```
 - Method : POST
 - API Endpoint : 생성된 pseudo-sensor-log-lambda의 API Endpoint
