@@ -1,7 +1,5 @@
 # Terraform을 활용한 아키텍쳐 IaC화 (수정 중)
 
-## 생성되는 리소스 이름 수정 필요!
-
 <a href="https://www.terraform.io/"><img src="../assets/Terraform.png" alt="centered image" width="500"/></a>
 
 ## 주요 목표
@@ -75,7 +73,7 @@ AWS에서 제공하는 매니지드 데이터 스트리밍 서비스인 Amazon K
 - [AWS CLI](https://aws.amazon.com/ko/cli/)를 로컬 환경에 설치합니다. 설치 방법은 해당 링크에 제공되어 있습니다.
 - 현재 리포지토리를 fork한 후 로컬 환경에서 `git clone`을 진행합니다.
 - 기존에 소유하고 있는 AWS 계정에서 Access Key/Secret Key 를 발급받은 후, [AWS CLI](https://aws.amazon.com/ko/cli/)에 다음과 같은 명령어를 입력한 후 크레덴셜을 기입합니다.
-  > `aws configure`
+  ```aws configure```
 - Terraform 리소스를 사용해야 함으로 [Terraform CLI](https://learn.hashicorp.com/tutorials/terraform/install-cli)를 설치합니다.
 - 터미널에서 클론해 놓은 디렉터리로 이동하여 `cd terraform`으로 디렉터리를 이동합니다.
 - 먼저 `terraform` 디렉터리를 `terraform init`을 통해 초기화합니다.
@@ -116,12 +114,20 @@ AWS에서 제공하는 매니지드 데이터 스트리밍 서비스인 Amazon K
 <img src="../assets/outputs.png" alt="centered image" width="800"/>
 
 - 생성된 엔드포인트에 [Postman](https://www.postman.com/)과 같은 API 플랫폼을 활용하여 POST 요청을 진행합니다. 이때 요청 페이로드는 다음과 같은 json 형태로 작성합니다.
-    ```json
-    {
-      "count": 12,
-      "interval": 10
-    }
-    ```
-<div style="text-align: center;"><img src="../assets/postman-sample-request.png" alt="centered image" width="800"/></div>
+   
+  <div style="text-align: left;"><img src="../assets/postman-sample-request.png" width="800"/></div>
 
 - 약 1분 마다 이상 데이터가 지정된 Discord Webhook URL을 통하여 전송됩니다.
+  <div style="text-align: left;"><img src="../assets/discord.png" width="250"/></div>
+
+- 모니터링 서비스인 Grafana에 접속하기 위해서는 터미널 상에 출력되는 다음 두 값들을 참조합니다.
+  <div style="text-align: left;"><img src="../assets/grafana-endpoints.png" width="600"/></div>
+
+    - Route53 상 등록된 도메인이 없는 경우에는 `grafana-ec2-public-dns`의 주소로 접속합니다.
+    - 도메인을 입력했다면 `grafana-public-domain-address`의 주소로 접속합니다.
+
+  해당 링크에 정상적으로 접속했다면 다음과 같은 화면이 나타나게 됩니다.
+  <div style="text-align: left;"><img src="../assets/grafana-login.png" width="800"/></div>
+
+  Grafana의 초기 설정 ID 및 Password는 `admin`으로 동일하며 최초 접속시 비밀번호 변경을 요구합니다. 이때 사용자가 원하는 비밀번호 형식으로 구성합니다.ㄴ
+
