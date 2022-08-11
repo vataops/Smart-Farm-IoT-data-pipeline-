@@ -91,3 +91,6 @@ api_address = os.getenv('API_ENDPOINT')
     "interval": 10
 }
 ```
+- 결과 화면 :
+![image](https://user-images.githubusercontent.com/89952061/184067861-c29340ec-ca4b-48e6-af01-b2d988ef9dc1.png)
+
