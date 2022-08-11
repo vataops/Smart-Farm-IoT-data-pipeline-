@@ -48,7 +48,7 @@ inter = 10
 
 i = 0
 
-device_num = 2;
+device_num = 2
 
 while i < count:
     err_randint_1 = randint(0, 4)
