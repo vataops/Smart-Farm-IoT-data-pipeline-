@@ -76,7 +76,7 @@
         <div style="text-align: center"><img src="assets/spike-log-bucket.png"></div>
 
 ## **Architecture Test**
-### 가상의 로그 데이터 전송
+### [가상의 로그 데이터 전송](https://github.com/cs-devops-bootcamp/devops-02-Final-TeamA-scenario1/blob/main/pseudo-sensor-log-lambda/README.md)
 1. AWS Lambda인 ```pseudo_sensor_log_lambda```의 API Gateway인 ```pseudo_api_gw```의 _Endpoint_ 에 요청 _body_ 를 담아, **POST 요청**을 보냅니다.
 2. ```pseudo_api_gw```에 의해 실행된 ```pseudo_sensor_log_lambda```는 요청한 _body_ 에 따라 로직을 실행,
     - ```kinesis_api_gw```의 **_Endpoint_ 로 요청**을 보냅니다.
