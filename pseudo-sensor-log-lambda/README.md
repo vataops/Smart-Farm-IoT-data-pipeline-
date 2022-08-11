@@ -7,7 +7,7 @@
 - API Gateway의 Endpoint에 요청 수(Count), 요청 간격(Interval)을 전달하여 손쉽게 테스팅이 가능합니다.
 - pseudo-sensor-log-lambda는 Kinesis Data Stream의 API Endpoint에 데이터를 전송합니다.
 
-serverless pattern 참고 : https://serverlessland.com/patterns/apigw-canary-deployment-cdk
+> serverless pattern : https://serverlessland.com/patterns/apigw-canary-deployment-cdk
 
 ## Files
 ### `serverless.yml`
