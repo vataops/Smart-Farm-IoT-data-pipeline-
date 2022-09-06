@@ -32,7 +32,7 @@
 - Resource 선정 이유
 
 ## **Architecture Image**
-<div style= "text-align: center"><img src="assets/final-architecture.png"></div>
+![final-architecture](https://user-images.githubusercontent.com/89952061/188569128-eba5a919-ba51-41e2-878f-0e34d42e907d.png)
 
 ## **실시간 데이터 수집/저장**
 1. 수집/생성 Application으로부터 발생한 로그가 Kinesis Proxy 역할을 하는 [ApiGateway](#amazon-api-gateway) ```kinesis_api_gw```를 통해 **데이터 파이프라인으로 진입**합니다.
